@@ -1,800 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>veehicee · Curriculum Download Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>veehicee · Curriculum Library</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@600;700&display=swap">
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-        --ink: #0b2b4a;
-        --ink-soft: #3a5b7a;
-        --muted: #6b8ba8;
-        --line: #d9e5f0;
-        --bg: #f5f7fc;
-        --card: #ffffff;
-        --accent: #0b6bcb;
-        --accent-soft: #e8f1fb;
-        --ok: #0a7f4b;
-        --ok-soft: #e6f6ee;
-        --err: #c0392b;
-        --err-soft: #fdecea;
-        --shadow: 0 20px 40px -18px rgba(11, 43, 74, 0.28), 0 6px 14px -8px rgba(0,0,0,0.05);
-    }
-
-    body {
-        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-        background:
-            radial-gradient(1200px 600px at 10% -10%, #e6eefa 0%, transparent 60%),
-            radial-gradient(900px 500px at 110% 110%, #e8f6ee 0%, transparent 55%),
-            var(--bg);
-        min-height: 100vh;
-        color: var(--ink);
-        padding: 2.5rem 1.25rem 4rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    .wrap { width: 100%; max-width: 960px; }
-
-    /* ---------- LOGIN GATE ---------- */
-    .gate {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 70vh;
-    }
-
-    .login-card {
-        width: 100%;
-        max-width: 420px;
-        background: var(--card);
-        border-radius: 24px;
-        padding: 2.4rem 2rem 2rem;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--line);
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .login-card::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 5px;
-        background: linear-gradient(90deg, #0b6bcb, #47a3f3, #0a7f4b);
-    }
-
-    .lock-icon {
-        width: 64px; height: 64px;
-        margin: 0 auto 1.2rem;
-        background: var(--accent-soft);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        border: 1px solid #cfe2f4;
-    }
-
-    .login-card h1 {
-        font-size: 1.45rem;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        margin-bottom: 0.4rem;
-    }
-
-    .login-card p {
-        color: var(--ink-soft);
-        font-size: 0.92rem;
-        margin-bottom: 1.6rem;
-        line-height: 1.5;
-    }
-
-    .field {
-        text-align: left;
-        margin-bottom: 1rem;
-    }
-
-    .field label {
-        display: block;
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 0.4rem;
-    }
-
-    .password-wrap {
-        position: relative;
-    }
-
-    .field input {
-        width: 100%;
-        font-family: inherit;
-        font-size: 1rem;
-        padding: 0.85rem 2.8rem 0.85rem 1rem;
-        border: 1.5px solid var(--line);
-        border-radius: 12px;
-        background: #f9fbfd;
-        color: var(--ink);
-        transition: all 0.15s;
-        outline: none;
-    }
-
-    .field input:focus {
-        border-color: var(--accent);
-        background: white;
-        box-shadow: 0 0 0 4px var(--accent-soft);
-    }
-
-    .field input.shake {
-        animation: shake 0.35s ease;
-        border-color: var(--err);
-    }
-
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-8px); }
-        75% { transform: translateX(8px); }
-    }
-
-    .toggle-vis {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 1.1rem;
-        color: var(--muted);
-        padding: 4px;
-        line-height: 1;
-    }
-
-    .toggle-vis:hover { color: var(--ink); }
-
-    .error-msg {
-        color: var(--err);
-        font-size: 0.85rem;
-        font-weight: 500;
-        margin-top: 0.5rem;
-        text-align: left;
-        min-height: 1.2em;
-    }
-
-    .btn {
-        border: 1px solid var(--line);
-        background: var(--card);
-        color: var(--ink);
-        font-family: inherit;
-        font-size: 0.92rem;
-        font-weight: 600;
-        padding: 0.72rem 1.2rem;
-        border-radius: 12px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        transition: all 0.18s ease;
-        white-space: nowrap;
-    }
-
-    .btn:hover { border-color: #b8cde0; background: #f7fafd; }
-
-    .btn.primary {
-        background: var(--ink);
-        color: white;
-        border-color: var(--ink);
-    }
-    .btn.primary:hover { background: #123a62; }
-
-    .btn.full { width: 100%; padding: 0.9rem; font-size: 1rem; }
-
-    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    /* ---------- APP ---------- */
-    .app { display: none; }
-    .app.visible { display: block; }
-    .gate.hidden { display: none; }
-
-    header { text-align: center; margin-bottom: 2.2rem; }
-
-    header h1 {
-        font-size: clamp(1.55rem, 2.4vw, 2rem);
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-    }
-
-    header h1 .dot {
-        width: 10px; height: 10px; border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 0 4px var(--accent-soft);
-    }
-
-    header p {
-        color: var(--ink-soft);
-        font-size: 0.95rem;
-        margin-top: 0.55rem;
-    }
-
-    .panel {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        padding: 1.6rem;
-        box-shadow: var(--shadow);
-        margin-bottom: 1.5rem;
-    }
-
-    .panel-title {
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
-        margin-bottom: 0.9rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .group-label {
-        font-size: 0.72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--muted);
-        margin: 0.9rem 0 0.55rem;
-    }
-    .group-label:first-child { margin-top: 0; }
-
-    .class-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 0.6rem;
-    }
-
-    .class-option {
-        border: 1.5px solid var(--line);
-        background: #f9fbfd;
-        border-radius: 12px;
-        padding: 0.85rem 0.9rem;
-        cursor: pointer;
-        text-align: left;
-        font-family: inherit;
-        transition: all 0.15s;
-        display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-        position: relative;
-    }
-
-    .class-option:hover { border-color: #b8cde0; background: #f2f8fd; }
-
-    .class-option.active {
-        border-color: var(--accent);
-        background: var(--accent-soft);
-        box-shadow: 0 0 0 3px rgba(11, 107, 203, 0.12);
-    }
-
-    .class-option .co-name {
-        font-weight: 700;
-        font-size: 0.95rem;
-        color: var(--ink);
-    }
-
-    .class-option .co-path {
-        font-family: 'SF Mono', ui-monospace, monospace;
-        font-size: 0.7rem;
-        color: var(--muted);
-    }
-
-    .class-option.active .co-path { color: var(--accent); }
-
-    .class-option .check {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: var(--accent);
-        color: white;
-        font-size: 0.7rem;
-        display: none;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .class-option.active .check { display: flex; }
-
-    /* Page selector */
-    .page-row {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .page-input-wrap {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex: 1;
-        min-width: 240px;
-    }
-
-    input[type="range"] {
-        flex: 1;
-        height: 6px;
-        -webkit-appearance: none;
-        background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 0%), #cadef0 var(--fill, 0%), #cadef0 100%);
-        border-radius: 30px;
-        outline: none;
-        cursor: pointer;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 22px;
-        height: 22px;
-        background: white;
-        border-radius: 50%;
-        border: 2px solid var(--accent);
-        box-shadow: 0 2px 8px rgba(11,107,203,0.25);
-        cursor: grab;
-    }
-
-    input[type="range"]::-moz-range-thumb {
-        width: 22px;
-        height: 22px;
-        background: white;
-        border-radius: 50%;
-        border: 2px solid var(--accent);
-        cursor: grab;
-    }
-
-    .page-value {
-        font-weight: 700;
-        font-size: 1.15rem;
-        background: var(--ink);
-        color: white;
-        min-width: 62px;
-        text-align: center;
-        padding: 0.35rem 0.5rem;
-        border-radius: 10px;
-        letter-spacing: 0.02em;
-    }
-
-    .page-hint {
-        font-size: 0.78rem;
-        color: var(--muted);
-    }
-
-    /* Results */
-    .results-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-    }
-
-    .results-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: var(--ink);
-    }
-
-    .results-title span {
-        color: var(--muted);
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-
-    .download-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
-    }
-
-    .dl-row {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: #f9fbfd;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 1rem 1.15rem;
-        transition: all 0.15s;
-    }
-
-    .dl-row:hover { border-color: #b8cde0; background: #f2f8fd; }
-
-    .dl-icon {
-        width: 42px;
-        height: 42px;
-        flex-shrink: 0;
-        border-radius: 10px;
-        background: var(--accent-soft);
-        color: var(--accent);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.15rem;
-        font-weight: 700;
-        border: 1px solid #cfe2f4;
-    }
-
-    .dl-info { flex: 1; min-width: 0; }
-
-    .dl-name {
-        font-weight: 600;
-        font-size: 0.98rem;
-        color: var(--ink);
-        margin-bottom: 0.15rem;
-    }
-
-    .dl-url {
-        font-family: 'SF Mono', ui-monospace, monospace;
-        font-size: 0.72rem;
-        color: var(--muted);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .dl-btn {
-        flex-shrink: 0;
-        text-decoration: none;
-        background: var(--ink);
-        color: white;
-        font-weight: 600;
-        font-size: 0.85rem;
-        padding: 0.55rem 1rem;
-        border-radius: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        transition: all 0.15s;
-        border: 1px solid var(--ink);
-    }
-
-    .dl-btn:hover { background: #123a62; transform: translateY(-1px); }
-    .dl-btn:active { transform: translateY(0); }
-
-    .empty-state {
-        text-align: center;
-        padding: 2.5rem 1rem;
-        color: var(--muted);
-        font-size: 0.92rem;
-    }
-
-    .empty-state .big {
-        font-size: 2.2rem;
-        margin-bottom: 0.6rem;
-        opacity: 0.5;
-    }
-
-    .logout {
-        text-align: center;
-        margin-top: 2rem;
-    }
-
-    .logout button {
-        background: none;
-        border: none;
-        color: var(--muted);
-        font-family: inherit;
-        font-size: 0.85rem;
-        cursor: pointer;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-    }
-
-    .logout button:hover { color: var(--ink); }
-
-    @media (max-width: 520px) {
-        body { padding: 1.5rem 0.9rem 3rem; }
-        .login-card { padding: 2rem 1.5rem 1.6rem; }
-        .dl-row { flex-wrap: wrap; }
-        .dl-btn { width: 100%; justify-content: center; }
-        .page-row { flex-direction: column; align-items: stretch; }
-        .page-input-wrap { min-width: 0; }
-    }
+:root{
+  --navy:#10294a; --navy-2:#173a66; --green:#0b6e4f; --green-soft:#e3f2ec;
+  --bg:#eef1f6; --surface:#ffffff; --surface-2:#f6f8fb; --ink:#14233a; --ink-2:#4a5b73; --muted:#7a8aa0;
+  --line:#dbe2ec; --focus:#1e6fd9; --err:#b3261e; --brass:#c79a3b;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1624; --surface:#122238; --surface-2:#0f1d31; --ink:#e8eef7; --ink-2:#b3c0d3; --muted:#8091a8;
+    --line:#243650; --green-soft:#10372c; --green:#3fbf94; --focus:#6aa8ff; --err:#ff8a80; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1624; --surface:#122238; --surface-2:#0f1d31; --ink:#e8eef7; --ink-2:#b3c0d3; --muted:#8091a8;
+  --line:#243650; --green-soft:#10372c; --green:#3fbf94; --focus:#6aa8ff; --err:#ff8a80; color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:10}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* ===== Sign in ===== */
+.gate{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr}
+.gate-brand{background:var(--navy);color:#fff;padding:3.5rem 4rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.gate-brand::after{content:"";position:absolute;right:-120px;bottom:-120px;width:380px;height:380px;border:56px solid rgba(255,255,255,.05);border-radius:50%}
+.mark{display:flex;align-items:center;gap:.7rem;font-weight:600;font-size:1.05rem;letter-spacing:.01em}
+.mark i{width:34px;height:34px;border-radius:8px;background:var(--green);display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-weight:700;font-size:1.1rem;color:#fff}
+.gate-brand h1{font-family:var(--serif);font-size:clamp(2rem,3.4vw,2.9rem);line-height:1.15;font-weight:700;max-width:16ch;letter-spacing:-.01em}
+.gate-brand p{margin-top:1.1rem;color:#b9c8dd;max-width:42ch;font-size:1rem}
+.gate-brand small{color:#8fa3bf;font-size:.82rem}
+.gate-form{display:flex;align-items:center;justify-content:center;padding:2.5rem 1.5rem}
+.card{width:100%;max-width:380px}
+.card h2{font-family:var(--serif);font-size:1.6rem;margin-bottom:.4rem}
+.card .sub{color:var(--ink-2);font-size:.95rem;margin-bottom:1.6rem}
+label{display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem}
+.pw{position:relative}
+.pw input{width:100%;padding:.8rem 3.4rem .8rem .95rem;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);font-size:1rem}
+.pw input[aria-invalid="true"]{border-color:var(--err)}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;padding:.4rem .6rem;font-size:.82rem;font-weight:600;color:var(--ink-2);cursor:pointer;border-radius:6px}
+.err{color:var(--err);font-size:.88rem;min-height:1.4em;margin-top:.5rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);padding:.65rem 1.1rem;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:none;color:var(--ink);transition:background .15s,border-color .15s}
+.btn:hover{background:var(--surface-2);border-color:var(--muted)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+.btn.primary:hover{background:#095a41;border-color:#095a41}
+:root[data-theme="dark"] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:#06251c}
+.btn.block{width:100%;padding:.85rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ===== App shell ===== */
+.topbar{background:var(--navy);color:#fff}
+.topbar-in{max-width:1180px;margin:0 auto;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.topbar .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.28);padding:.45rem .9rem;font-size:.85rem}
+.topbar .btn:hover{background:rgba(255,255,255,.1)}
+.layout{max-width:1180px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:260px 1fr;gap:2rem;align-items:start}
+.side{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.6rem;position:sticky;top:1rem}
+.side h3{font-size:.8rem;font-weight:600;color:var(--muted);padding:.8rem .75rem .35rem}
+.side h3:first-child{padding-top:.4rem}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;justify-content:space-between;align-items:center;text-align:left;background:none;border:0;border-radius:8px;padding:.6rem .75rem;cursor:pointer;font-size:.93rem;color:var(--ink-2)}
+.nav button:hover{background:var(--surface-2);color:var(--ink)}
+.nav button[aria-current="true"]{background:var(--navy);color:#fff;font-weight:600}
+.nav button span{font-size:.75rem;opacity:.7}
+.main{min-width:0}
+.crumb{color:var(--muted);font-size:.88rem;margin-bottom:.4rem}
+.main h1{font-family:var(--serif);font-size:clamp(1.6rem,2.6vw,2.1rem);line-height:1.2;letter-spacing:-.01em}
+.lede{color:var(--ink-2);margin:.5rem 0 1.6rem;max-width:62ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.4rem;margin-bottom:1.25rem}
+.panel h2{font-size:1rem;font-weight:600;margin-bottom:.2rem}
+.panel .hint{color:var(--muted);font-size:.86rem;margin-bottom:1rem}
+.stepper{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem}
+.stepper input[type=number]{width:84px;text-align:center;padding:.6rem .4rem;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600;font-size:1.05rem}
+.stepper .of{color:var(--muted);font-size:.9rem}
+input[type=range]{flex:1;min-width:140px;accent-color:var(--green);height:6px}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
+.pages button{aspect-ratio:1;border:1.5px solid var(--line);background:var(--surface-2);border-radius:8px;cursor:pointer;font-weight:500;font-size:.9rem;color:var(--ink-2)}
+.pages button:hover{border-color:var(--muted);color:var(--ink)}
+.pages button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+:root[data-theme="dark"] .pages button[aria-pressed="true"],:root:not([data-theme="light"]) .pages button[aria-pressed="true"]{color:#06251c}
+.file{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.file-ico{width:48px;height:60px;border-radius:6px;background:var(--green-soft);border:1.5px solid var(--green);color:var(--green);display:grid;place-items:end center;padding-bottom:7px;font-size:.72rem;font-weight:700;letter-spacing:.04em;flex-shrink:0}
+.file-info{flex:1;min-width:200px}
+.file-name{font-weight:600;font-size:1.05rem}
+.file-url{font-size:.8rem;color:var(--muted);word-break:break-all;margin-top:.15rem}
+.file-act{display:flex;gap:.6rem;flex-wrap:wrap}
+.empty{text-align:center;padding:2.2rem 1rem;color:var(--ink-2)}
+.empty b{display:block;font-family:var(--serif);font-size:1.15rem;color:var(--ink);margin-bottom:.3rem}
+.toast{position:fixed;left:50%;bottom:calc(1.5rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:.6rem 1.1rem;border-radius:8px;font-size:.9rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+
+@media (max-width:860px){
+  .gate{grid-template-columns:1fr}
+  .gate-brand{padding:2rem 1.5rem;min-height:0;gap:1.5rem}
+  .gate-brand small{display:none}
+  .layout{grid-template-columns:1fr;gap:1.25rem;padding:1.25rem 1rem 3rem}
+  .side{position:static;display:flex;gap:.4rem;overflow-x:auto;padding:.5rem}
+  .side h3{display:none}
+  .nav{flex-direction:row;gap:.4rem}
+  .nav button{white-space:nowrap;border:1px solid var(--line)}
+  .file-act{width:100%}.file-act .btn{flex:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 
-<!-- ============ LOGIN GATE ============ -->
-<div class="gate" id="gate">
-    <div class="login-card">
-        <div class="lock-icon">🔒</div>
-        <h1>veehicee</h1>
-        <p>Enter the access password to open the curriculum download links.</p>
-
-        <div class="field">
-            <label for="passwordInput">Password</label>
-            <div class="password-wrap">
-                <input type="password" id="passwordInput" placeholder="Enter password…" autocomplete="off" />
-                <button class="toggle-vis" id="toggleVis" type="button" title="Show password">👁</button>
-            </div>
-            <div class="error-msg" id="errorMsg"></div>
-        </div>
-
-        <button class="btn primary full" id="unlockBtn">🔓 Unlock</button>
+<section class="gate" id="gate">
+  <div class="gate-brand">
+    <div class="mark"><i>v</i> veehicee</div>
+    <div>
+      <h1>Curriculum library for Nigerian schools</h1>
+      <p>Open NERDC curriculum documents by class and page, from Primary 5 through SSS 3 and the trade subjects.</p>
     </div>
+    <small>Access is limited to authorised staff.</small>
+  </div>
+  <div class="gate-form">
+    <div class="card">
+      <h2>Sign in</h2>
+      <p class="sub">Enter the access password to open the library.</p>
+      <label for="pw">Access password</label>
+      <div class="pw">
+        <input type="password" id="pw" autocomplete="off" aria-describedby="err">
+        <button type="button" id="vis" aria-label="Show password">Show</button>
+      </div>
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn primary block" id="unlock" type="button">Open library</button>
+    </div>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <div class="topbar"><div class="topbar-in">
+    <div class="mark"><i>v</i> veehicee</div>
+    <button class="btn" id="lock" type="button">Lock library</button>
+  </div></div>
+
+  <div class="layout">
+    <aside class="side" aria-label="Classes"><div id="nav"></div></aside>
+
+    <main class="main">
+      <div class="crumb" id="crumb">Curriculum library</div>
+      <h1 id="title">Select a class</h1>
+      <p class="lede" id="lede">Choose a class from the list, then pick a page from 1 to 31 to get its PDF.</p>
+
+      <div class="panel">
+        <h2>Page</h2>
+        <p class="hint">Use the arrows, type a number, drag the slider, or tap a page below.</p>
+        <div class="stepper">
+          <button class="btn" id="prev" type="button" aria-label="Previous page">Previous</button>
+          <input type="number" id="num" min="1" max="31" value="1" aria-label="Page number">
+          <span class="of">of 31</span>
+          <button class="btn" id="next" type="button" aria-label="Next page">Next</button>
+          <input type="range" id="range" min="1" max="31" value="1" aria-label="Page slider">
+        </div>
+        <div class="pages" id="pages"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Document</h2>
+        <div id="result"></div>
+      </div>
+    </main>
+  </div>
 </div>
-
-<!-- ============ APP ============ -->
-<div class="wrap app" id="app">
-    <header>
-        <h1><span class="dot"></span> veehicee</h1>
-        <p>Select a class and page (1–31), then download the PDF.</p>
-    </header>
-
-    <!-- Step 1: Class -->
-    <div class="panel">
-        <div class="panel-title">① Choose a class</div>
-        <div id="classGroups"></div>
-    </div>
-
-    <!-- Step 2: Page -->
-    <div class="panel">
-        <div class="panel-title">② Choose a page (1 – 31)</div>
-        <div class="page-row">
-            <div class="page-input-wrap">
-                <input type="range" id="pageSlider" min="1" max="31" value="1" step="1" />
-                <div class="page-value" id="pageValue">1</div>
-            </div>
-            <div class="page-hint">Drag the slider or tap a class above to preview</div>
-        </div>
-    </div>
-
-    <!-- Results -->
-    <div class="panel">
-        <div class="results-head">
-            <div class="results-title" id="resultsTitle">
-                Download link <span id="resultsMeta"></span>
-            </div>
-        </div>
-        <div class="download-list" id="downloadList"></div>
-    </div>
-
-    <div class="logout">
-        <button id="logoutBtn">🔒 Lock portal</button>
-    </div>
-</div>
+<div class="toast" id="toast" hidden></div>
 
 <script>
-(function() {
-    "use strict";
+(function(){
+"use strict";
+var HASH="ef5c669d6257be595fa8f611e57e9cd7b3f386f5528ff71b41273247cfa2d45a";
+var KEY="veehicee_portal_unlocked";
+var BASE="https://lmis.nerdcportals.com.ng/";
+var MAX=31;
+var CLASSES=[
+ {id:"jss_1",name:"JSS 1",g:"Junior secondary"},{id:"jss_2",name:"JSS 2",g:"Junior secondary"},{id:"jss_3",name:"JSS 3",g:"Junior secondary"},
+ {id:"sss_1",name:"SSS 1",g:"Senior secondary"},{id:"sss_2",name:"SSS 2",g:"Senior secondary"},{id:"sss_3",name:"SSS 3",g:"Senior secondary"},
+ {id:"pry_5",name:"Primary 5",g:"Primary"},
+ {id:"j1_trades",name:"J1 Trades",g:"Trade subjects"},{id:"j2_trades",name:"J2 Trades",g:"Trade subjects"},{id:"j3_trades",name:"J3 Trades",g:"Trade subjects"},
+ {id:"s1_trades",name:"S1 Trades",g:"Trade subjects"},{id:"s2_trades",name:"S2 Trades",g:"Trade subjects"},{id:"s3_trades",name:"S3 Trades",g:"Trade subjects"}
+];
+var cls=null,page=1;
+var $=function(i){return document.getElementById(i)};
+var gate=$("gate"),app=$("app"),pw=$("pw"),err=$("err");
 
-    /* ------------ CONFIG ------------ */
-    const PASSWORD = "sheggun2025";
-    const SESSION_KEY = "veehicee_portal_unlocked";
-    const BASE = "https://lmis.nerdcportals.com.ng/";
+function getS(){try{return sessionStorage.getItem(KEY)==="1"}catch(e){return false}}
+function setS(v){try{v?sessionStorage.setItem(KEY,"1"):sessionStorage.removeItem(KEY)}catch(e){}}
 
-    // Full class list — JSS 1–3, SSS 1–3, Primary 5, and trades
-    const CLASSES = [
-        // Junior Secondary
-        { id: "jss_1",     name: "JSS 1",     path: "jss_1/necurrdc",     group: "Junior Secondary" },
-        { id: "jss_2",     name: "JSS 2",     path: "jss_2/necurrdc",     group: "Junior Secondary" },
-        { id: "jss_3",     name: "JSS 3",     path: "jss_3/necurrdc",     group: "Junior Secondary" },
+async function sha(t){
+  var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));
+  return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");
+}
+async function unlock(){
+  var ok=false;
+  try{ok=(await sha(pw.value))===HASH}catch(e){err.textContent="This browser can’t verify passwords. Open the page over HTTPS.";return}
+  if(ok){err.textContent="";pw.removeAttribute("aria-invalid");setS(true);show()}
+  else{err.textContent="That password is incorrect. Check it and try again.";pw.setAttribute("aria-invalid","true");pw.focus();pw.select()}
+}
+function show(){gate.hidden=true;app.hidden=false;render()}
+function lock(){setS(false);app.hidden=true;gate.hidden=false;pw.value="";err.textContent="";pw.focus()}
 
-        // Senior Secondary
-        { id: "sss_1",     name: "SSS 1",     path: "sss_1/necurrdc",     group: "Senior Secondary" },
-        { id: "sss_2",     name: "SSS 2",     path: "sss_2/necurrdc",     group: "Senior Secondary" },
-        { id: "sss_3",     name: "SSS 3",     path: "sss_3/necurrdc",     group: "Senior Secondary" },
+$("unlock").onclick=unlock;
+pw.onkeydown=function(e){if(e.key==="Enter")unlock()};
+$("vis").onclick=function(){var p=pw.type==="password";pw.type=p?"text":"password";this.textContent=p?"Hide":"Show";this.setAttribute("aria-label",p?"Hide password":"Show password")};
+$("lock").onclick=lock;
 
-        // Primary
-        { id: "pry_5",     name: "Primary 5", path: "pry_5/necurrdc",     group: "Primary" },
+function url(){return BASE+cls.id+"/necurrdc/"+page+".pdf"}
+function setPage(n){n=Math.max(1,Math.min(MAX,Number(n)||1));page=n;render()}
 
-        // Trades
-        { id: "j1_trades", name: "J1 Trades", path: "j1_trades/necurrdc", group: "Trades" },
-        { id: "j2_trades", name: "J2 Trades", path: "j2_trades/necurrdc", group: "Trades" },
-        { id: "j3_trades", name: "J3 Trades", path: "j3_trades/necurrdc", group: "Trades" },
-        { id: "s1_trades", name: "S1 Trades", path: "s1_trades/necurrdc", group: "Trades" },
-        { id: "s2_trades", name: "S2 Trades", path: "s2_trades/necurrdc", group: "Trades" },
-        { id: "s3_trades", name: "S3 Trades", path: "s3_trades/necurrdc", group: "Trades" }
-    ];
-
-    // Preserve order of groups as they appear
-    const GROUP_ORDER = ["Junior Secondary", "Senior Secondary", "Primary", "Trades"];
-
-    /* ------------ STATE ------------ */
-    let selectedClass = null;
-    let selectedPage = 1;
-
-    /* ------------ DOM ------------ */
-    const gate = document.getElementById("gate");
-    const app = document.getElementById("app");
-    const passwordInput = document.getElementById("passwordInput");
-    const errorMsg = document.getElementById("errorMsg");
-    const unlockBtn = document.getElementById("unlockBtn");
-    const toggleVis = document.getElementById("toggleVis");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const classGroups = document.getElementById("classGroups");
-    const pageSlider = document.getElementById("pageSlider");
-    const pageValue = document.getElementById("pageValue");
-    const downloadList = document.getElementById("downloadList");
-    const resultsTitle = document.getElementById("resultsTitle");
-
-    /* ------------ AUTH ------------ */
-    function isUnlocked() {
-        try { return sessionStorage.getItem(SESSION_KEY) === "1"; }
-        catch (e) { return false; }
-    }
-    function setUnlocked() {
-        try { sessionStorage.setItem(SESSION_KEY, "1"); } catch (e) {}
-    }
-    function setLocked() {
-        try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
-    }
-
-    function showApp() {
-        gate.classList.add("hidden");
-        app.classList.add("visible");
-        initApp();
-    }
-    function showGate() {
-        app.classList.remove("visible");
-        gate.classList.remove("hidden");
-        passwordInput.value = "";
-        errorMsg.textContent = "";
-        passwordInput.focus();
-    }
-
-    function attemptUnlock() {
-        if (passwordInput.value === PASSWORD) {
-            errorMsg.textContent = "";
-            setUnlocked();
-            showApp();
-        } else {
-            errorMsg.textContent = "Incorrect password. Please try again.";
-            passwordInput.classList.add("shake");
-            setTimeout(() => passwordInput.classList.remove("shake"), 400);
-            passwordInput.focus();
-            passwordInput.select();
-        }
-    }
-
-    unlockBtn.addEventListener("click", attemptUnlock);
-    passwordInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") attemptUnlock();
+function renderNav(){
+  var groups=[],html="";
+  CLASSES.forEach(function(c){if(groups.indexOf(c.g)<0)groups.push(c.g)});
+  groups.forEach(function(g){
+    html+='<h3>'+g+'</h3><div class="nav">';
+    CLASSES.filter(function(c){return c.g===g}).forEach(function(c){
+      html+='<button type="button" data-id="'+c.id+'"'+(cls&&cls.id===c.id?' aria-current="true"':'')+'>'+c.name+'</button>';
     });
-    toggleVis.addEventListener("click", () => {
-        const isPwd = passwordInput.type === "password";
-        passwordInput.type = isPwd ? "text" : "password";
-        toggleVis.textContent = isPwd ? "🙈" : "👁";
-    });
-    logoutBtn.addEventListener("click", () => {
-        setLocked();
-        showGate();
-    });
+    html+='</div>';
+  });
+  $("nav").innerHTML=html;
+  $("nav").querySelectorAll("button").forEach(function(b){
+    b.onclick=function(){cls=CLASSES.find(function(c){return c.id===b.dataset.id});render()};
+  });
+}
+function renderPages(){
+  var h="";
+  for(var i=1;i<=MAX;i++)h+='<button type="button" data-p="'+i+'" aria-pressed="'+(i===page)+'" aria-label="Page '+i+'">'+i+'</button>';
+  $("pages").innerHTML=h;
+  $("pages").querySelectorAll("button").forEach(function(b){b.onclick=function(){setPage(b.dataset.p)}});
+}
+function renderResult(){
+  var r=$("result");
+  if(!cls){r.innerHTML='<div class="empty"><b>No class selected</b>Choose a class from the list to get a download link.</div>';return}
+  var u=url();
+  r.innerHTML='<div class="file"><div class="file-ico">PDF</div><div class="file-info"><div class="file-name">'+cls.name+', page '+page+'</div><div class="file-url">'+u+'</div></div>'+
+   '<div class="file-act"><button class="btn" id="copy" type="button">Copy link</button><a class="btn primary" href="'+u+'" target="_blank" rel="noopener noreferrer" download>Download PDF</a></div></div>';
+  $("copy").onclick=function(){
+    var done=function(){toast("Link copied")};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(done,function(){toast("Copy failed. Select the link and copy it.")})}
+    else toast("Copy failed. Select the link and copy it.");
+  };
+}
+function render(){
+  renderNav();renderPages();renderResult();
+  $("num").value=page;$("range").value=page;
+  $("crumb").textContent=cls?cls.g:"Curriculum library";
+  $("title").textContent=cls?cls.name:"Select a class";
+  $("lede").textContent=cls?"Page "+page+" of "+MAX+". Download the PDF or copy its link to share.":"Choose a class from the list, then pick a page from 1 to 31 to get its PDF.";
+}
+var tt;
+function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},2200)}
 
-    /* ------------ APP LOGIC ------------ */
-    let appInitialized = false;
+$("prev").onclick=function(){setPage(page-1)};
+$("next").onclick=function(){setPage(page+1)};
+$("num").onchange=function(){setPage(this.value)};
+$("range").oninput=function(){setPage(this.value)};
 
-    function initApp() {
-        if (appInitialized) {
-            renderClassOptions();
-            renderResults();
-            return;
-        }
-        appInitialized = true;
-        renderClassOptions();
-        setupSlider();
-        renderResults();
-    }
-
-    function renderClassOptions() {
-        // group classes
-        const grouped = {};
-        CLASSES.forEach(c => {
-            if (!grouped[c.group]) grouped[c.group] = [];
-            grouped[c.group].push(c);
-        });
-
-        let html = "";
-        GROUP_ORDER.forEach(group => {
-            const items = grouped[group];
-            if (!items || !items.length) return;
-            html += `<div class="group-label">${group}</div>`;
-            html += `<div class="class-grid">`;
-            items.forEach(c => {
-                const active = selectedClass === c.id ? "active" : "";
-                html += `
-                    <button class="class-option ${active}" data-id="${c.id}" type="button">
-                        <span class="check">✓</span>
-                        <span class="co-name">${c.name}</span>
-                        <span class="co-path">${c.path}/</span>
-                    </button>
-                `;
-            });
-            html += `</div>`;
-        });
-
-        classGroups.innerHTML = html;
-
-        classGroups.querySelectorAll(".class-option").forEach(btn => {
-            btn.addEventListener("click", () => {
-                selectedClass = btn.dataset.id;
-                renderClassOptions();
-                renderResults();
-            });
-        });
-    }
-
-    function setupSlider() {
-        pageSlider.addEventListener("input", (e) => {
-            selectedPage = Number(e.target.value);
-            pageValue.textContent = selectedPage;
-            updateSliderFill();
-            renderResults();
-        });
-        updateSliderFill();
-    }
-
-    function updateSliderFill() {
-        const min = Number(pageSlider.min) || 1;
-        const max = Number(pageSlider.max) || 31;
-        const pct = ((selectedPage - min) / (max - min)) * 100;
-        pageSlider.style.setProperty("--fill", pct + "%");
-    }
-
-    function buildUrl(cls, page) {
-        return `${BASE}${cls.path}/${page}.pdf`;
-    }
-
-    function renderResults() {
-        if (!selectedClass) {
-            downloadList.innerHTML = `
-                <div class="empty-state">
-                    <div class="big">📚</div>
-                    Pick a class above to see its download link.
-                </div>
-            `;
-            resultsTitle.innerHTML = `Download link <span id="resultsMeta"></span>`;
-            return;
-        }
-
-        const cls = CLASSES.find(c => c.id === selectedClass);
-        if (!cls) return;
-
-        const url = buildUrl(cls, selectedPage);
-        resultsTitle.innerHTML = `Download link <span id="resultsMeta">· ${cls.name} · page ${selectedPage}</span>`;
-
-        downloadList.innerHTML = `
-            <div class="dl-row">
-                <div class="dl-icon">PDF</div>
-                <div class="dl-info">
-                    <div class="dl-name">${cls.name} — Page ${selectedPage}</div>
-                    <div class="dl-url">${url}</div>
-                </div>
-                <a class="dl-btn" href="${url}" target="_blank" rel="noopener noreferrer" download>⬇ Download</a>
-            </div>
-        `;
-    }
-
-    /* ------------ BOOT ------------ */
-    if (isUnlocked()) {
-        showApp();
-    } else {
-        showGate();
-    }
+if(getS())show();else pw.focus();
 })();
 </script>
 </body>
