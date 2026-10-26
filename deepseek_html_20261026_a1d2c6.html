@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>veehicee · Curriculum Download Portal</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --ink: #0b2b4a;
+        --ink-soft: #3a5b7a;
+        --muted: #6b8ba8;
+        --line: #d9e5f0;
+        --bg: #f5f7fc;
+        --card: #ffffff;
+        --accent: #0b6bcb;
+        --accent-soft: #e8f1fb;
+        --ok: #0a7f4b;
+        --ok-soft: #e6f6ee;
+        --err: #c0392b;
+        --err-soft: #fdecea;
+        --shadow: 0 20px 40px -18px rgba(11, 43, 74, 0.28), 0 6px 14px -8px rgba(0,0,0,0.05);
+    }
+
+    body {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        background:
+            radial-gradient(1200px 600px at 10% -10%, #e6eefa 0%, transparent 60%),
+            radial-gradient(900px 500px at 110% 110%, #e8f6ee 0%, transparent 55%),
+            var(--bg);
+        min-height: 100vh;
+        color: var(--ink);
+        padding: 2.5rem 1.25rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { width: 100%; max-width: 960px; }
+
+    /* ---------- LOGIN GATE ---------- */
+    .gate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 420px;
+        background: var(--card);
+        border-radius: 24px;
+        padding: 2.4rem 2rem 2rem;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--line);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .login-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0b6bcb, #47a3f3, #0a7f4b);
+    }
+
+    .lock-icon {
+        width: 64px; height: 64px;
+        margin: 0 auto 1.2rem;
+        background: var(--accent-soft);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        border: 1px solid #cfe2f4;
+    }
+
+    .login-card h1 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.4rem;
+    }
+
+    .login-card p {
+        color: var(--ink-soft);
+        font-size: 0.92rem;
+        margin-bottom: 1.6rem;
+        line-height: 1.5;
+    }
+
+    .field {
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+
+    .field label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+    }
+
+    .password-wrap {
+        position: relative;
+    }
+
+    .field input {
+        width: 100%;
+        font-family: inherit;
+        font-size: 1rem;
+        padding: 0.85rem 2.8rem 0.85rem 1rem;
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        background: #f9fbfd;
+        color: var(--ink);
+        transition: all 0.15s;
+        outline: none;
+    }
+
+    .field input:focus {
+        border-color: var(--accent);
+        background: white;
+        box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+
+    .field input.shake {
+        animation: shake 0.35s ease;
+        border-color: var(--err);
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+    }
+
+    .toggle-vis {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: var(--muted);
+        padding: 4px;
+        line-height: 1;
+    }
+
+    .toggle-vis:hover { color: var(--ink); }
+
+    .error-msg {
+        color: var(--err);
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+        text-align: left;
+        min-height: 1.2em;
+    }
+
+    .btn {
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        font-family: inherit;
+        font-size: 0.92rem;
+        font-weight: 600;
+        padding: 0.72rem 1.2rem;
+        border-radius: 12px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: all 0.18s ease;
+        white-space: nowrap;
+    }
+
+    .btn:hover { border-color: #b8cde0; background: #f7fafd; }
+
+    .btn.primary {
+        background: var(--ink);
+        color: white;
+        border-color: var(--ink);
+    }
+    .btn.primary:hover { background: #123a62; }
+
+    .btn.full { width: 100%; padding: 0.9rem; font-size: 1rem; }
+
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ---------- APP ---------- */
+    .app { display: none; }
+    .app.visible { display: block; }
+    .gate.hidden { display: none; }
+
+    header { text-align: center; margin-bottom: 2.2rem; }
+
+    header h1 {
+        font-size: clamp(1.55rem, 2.4vw, 2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    header h1 .dot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+
+    header p {
+        color: var(--ink-soft);
+        font-size: 0.95rem;
+        margin-top: 0.55rem;
+    }
+
+    .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 1.6rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 1.5rem;
+    }
+
+    .panel-title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .group-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin: 0.9rem 0 0.55rem;
+    }
+    .group-label:first-child { margin-top: 0; }
+
+    .class-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 0.6rem;
+    }
+
+    .class-option {
+        border: 1.5px solid var(--line);
+        background: #f9fbfd;
+        border-radius: 12px;
+        padding: 0.85rem 0.9rem;
+        cursor: pointer;
+        text-align: left;
+        font-family: inherit;
+        transition: all 0.15s;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        position: relative;
+    }
+
+    .class-option:hover { border-color: #b8cde0; background: #f2f8fd; }
+
+    .class-option.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        box-shadow: 0 0 0 3px rgba(11, 107, 203, 0.12);
+    }
+
+    .class-option .co-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--ink);
+    }
+
+    .class-option .co-path {
+        font-family: 'SF Mono', ui-monospace, monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+    }
+
+    .class-option.active .co-path { color: var(--accent); }
+
+    .class-option .check {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: white;
+        font-size: 0.7rem;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .class-option.active .check { display: flex; }
+
+    /* Page selector */
+    .page-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .page-input-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        min-width: 240px;
+    }
+
+    input[type="range"] {
+        flex: 1;
+        height: 6px;
+        -webkit-appearance: none;
+        background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--fill, 0%), #cadef0 var(--fill, 0%), #cadef0 100%);
+        border-radius: 30px;
+        outline: none;
+        cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 22px;
+        height: 22px;
+        background: white;
+        border-radius: 50%;
+        border: 2px solid var(--accent);
+        box-shadow: 0 2px 8px rgba(11,107,203,0.25);
+        cursor: grab;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        background: white;
+        border-radius: 50%;
+        border: 2px solid var(--accent);
+        cursor: grab;
+    }
+
+    .page-value {
+        font-weight: 700;
+        font-size: 1.15rem;
+        background: var(--ink);
+        color: white;
+        min-width: 62px;
+        text-align: center;
+        padding: 0.35rem 0.5rem;
+        border-radius: 10px;
+        letter-spacing: 0.02em;
+    }
+
+    .page-hint {
+        font-size: 0.78rem;
+        color: var(--muted);
+    }
+
+    /* Results */
+    .results-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .results-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--ink);
+    }
+
+    .results-title span {
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .download-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+
+    .dl-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #f9fbfd;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1rem 1.15rem;
+        transition: all 0.15s;
+    }
+
+    .dl-row:hover { border-color: #b8cde0; background: #f2f8fd; }
+
+    .dl-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        font-weight: 700;
+        border: 1px solid #cfe2f4;
+    }
+
+    .dl-info { flex: 1; min-width: 0; }
+
+    .dl-name {
+        font-weight: 600;
+        font-size: 0.98rem;
+        color: var(--ink);
+        margin-bottom: 0.15rem;
+    }
+
+    .dl-url {
+        font-family: 'SF Mono', ui-monospace, monospace;
+        font-size: 0.72rem;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dl-btn {
+        flex-shrink: 0;
+        text-decoration: none;
+        background: var(--ink);
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.55rem 1rem;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.15s;
+        border: 1px solid var(--ink);
+    }
+
+    .dl-btn:hover { background: #123a62; transform: translateY(-1px); }
+    .dl-btn:active { transform: translateY(0); }
+
+    .empty-state {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+    }
+
+    .empty-state .big {
+        font-size: 2.2rem;
+        margin-bottom: 0.6rem;
+        opacity: 0.5;
+    }
+
+    .logout {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .logout button {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-family: inherit;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .logout button:hover { color: var(--ink); }
+
+    @media (max-width: 520px) {
+        body { padding: 1.5rem 0.9rem 3rem; }
+        .login-card { padding: 2rem 1.5rem 1.6rem; }
+        .dl-row { flex-wrap: wrap; }
+        .dl-btn { width: 100%; justify-content: center; }
+        .page-row { flex-direction: column; align-items: stretch; }
+        .page-input-wrap { min-width: 0; }
+    }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN GATE ============ -->
+<div class="gate" id="gate">
+    <div class="login-card">
+        <div class="lock-icon">🔒</div>
+        <h1>veehicee</h1>
+        <p>Enter the access password to open the curriculum download links.</p>
+
+        <div class="field">
+            <label for="passwordInput">Password</label>
+            <div class="password-wrap">
+                <input type="password" id="passwordInput" placeholder="Enter password…" autocomplete="off" />
+                <button class="toggle-vis" id="toggleVis" type="button" title="Show password">👁</button>
+            </div>
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
+
+        <button class="btn primary full" id="unlockBtn">🔓 Unlock</button>
+    </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div class="wrap app" id="app">
+    <header>
+        <h1><span class="dot"></span> veehicee</h1>
+        <p>Select a class and page (1–31), then download the PDF.</p>
+    </header>
+
+    <!-- Step 1: Class -->
+    <div class="panel">
+        <div class="panel-title">① Choose a class</div>
+        <div id="classGroups"></div>
+    </div>
+
+    <!-- Step 2: Page -->
+    <div class="panel">
+        <div class="panel-title">② Choose a page (1 – 31)</div>
+        <div class="page-row">
+            <div class="page-input-wrap">
+                <input type="range" id="pageSlider" min="1" max="31" value="1" step="1" />
+                <div class="page-value" id="pageValue">1</div>
+            </div>
+            <div class="page-hint">Drag the slider or tap a class above to preview</div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="panel">
+        <div class="results-head">
+            <div class="results-title" id="resultsTitle">
+                Download link <span id="resultsMeta"></span>
+            </div>
+        </div>
+        <div class="download-list" id="downloadList"></div>
+    </div>
+
+    <div class="logout">
+        <button id="logoutBtn">🔒 Lock portal</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    "use strict";
+
+    /* ------------ CONFIG ------------ */
+    const PASSWORD = "sheggun2025";
+    const SESSION_KEY = "veehicee_portal_unlocked";
+    const BASE = "https://lmis.nerdcportals.com.ng/";
+
+    // Full class list — JSS 1–3, SSS 1–3, Primary 5, and trades
+    const CLASSES = [
+        // Junior Secondary
+        { id: "jss_1",     name: "JSS 1",     path: "jss_1/necurrdc",     group: "Junior Secondary" },
+        { id: "jss_2",     name: "JSS 2",     path: "jss_2/necurrdc",     group: "Junior Secondary" },
+        { id: "jss_3",     name: "JSS 3",     path: "jss_3/necurrdc",     group: "Junior Secondary" },
+
+        // Senior Secondary
+        { id: "sss_1",     name: "SSS 1",     path: "sss_1/necurrdc",     group: "Senior Secondary" },
+        { id: "sss_2",     name: "SSS 2",     path: "sss_2/necurrdc",     group: "Senior Secondary" },
+        { id: "sss_3",     name: "SSS 3",     path: "sss_3/necurrdc",     group: "Senior Secondary" },
+
+        // Primary
+        { id: "pry_5",     name: "Primary 5", path: "pry_5/necurrdc",     group: "Primary" },
+
+        // Trades
+        { id: "j1_trades", name: "J1 Trades", path: "j1_trades/necurrdc", group: "Trades" },
+        { id: "j2_trades", name: "J2 Trades", path: "j2_trades/necurrdc", group: "Trades" },
+        { id: "j3_trades", name: "J3 Trades", path: "j3_trades/necurrdc", group: "Trades" },
+        { id: "s1_trades", name: "S1 Trades", path: "s1_trades/necurrdc", group: "Trades" },
+        { id: "s2_trades", name: "S2 Trades", path: "s2_trades/necurrdc", group: "Trades" },
+        { id: "s3_trades", name: "S3 Trades", path: "s3_trades/necurrdc", group: "Trades" }
+    ];
+
+    // Preserve order of groups as they appear
+    const GROUP_ORDER = ["Junior Secondary", "Senior Secondary", "Primary", "Trades"];
+
+    /* ------------ STATE ------------ */
+    let selectedClass = null;
+    let selectedPage = 1;
+
+    /* ------------ DOM ------------ */
+    const gate = document.getElementById("gate");
+    const app = document.getElementById("app");
+    const passwordInput = document.getElementById("passwordInput");
+    const errorMsg = document.getElementById("errorMsg");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const toggleVis = document.getElementById("toggleVis");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const classGroups = document.getElementById("classGroups");
+    const pageSlider = document.getElementById("pageSlider");
+    const pageValue = document.getElementById("pageValue");
+    const downloadList = document.getElementById("downloadList");
+    const resultsTitle = document.getElementById("resultsTitle");
+
+    /* ------------ AUTH ------------ */
+    function isUnlocked() {
+        try { return sessionStorage.getItem(SESSION_KEY) === "1"; }
+        catch (e) { return false; }
+    }
+    function setUnlocked() {
+        try { sessionStorage.setItem(SESSION_KEY, "1"); } catch (e) {}
+    }
+    function setLocked() {
+        try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    }
+
+    function showApp() {
+        gate.classList.add("hidden");
+        app.classList.add("visible");
+        initApp();
+    }
+    function showGate() {
+        app.classList.remove("visible");
+        gate.classList.remove("hidden");
+        passwordInput.value = "";
+        errorMsg.textContent = "";
+        passwordInput.focus();
+    }
+
+    function attemptUnlock() {
+        if (passwordInput.value === PASSWORD) {
+            errorMsg.textContent = "";
+            setUnlocked();
+            showApp();
+        } else {
+            errorMsg.textContent = "Incorrect password. Please try again.";
+            passwordInput.classList.add("shake");
+            setTimeout(() => passwordInput.classList.remove("shake"), 400);
+            passwordInput.focus();
+            passwordInput.select();
+        }
+    }
+
+    unlockBtn.addEventListener("click", attemptUnlock);
+    passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") attemptUnlock();
+    });
+    toggleVis.addEventListener("click", () => {
+        const isPwd = passwordInput.type === "password";
+        passwordInput.type = isPwd ? "text" : "password";
+        toggleVis.textContent = isPwd ? "🙈" : "👁";
+    });
+    logoutBtn.addEventListener("click", () => {
+        setLocked();
+        showGate();
+    });
+
+    /* ------------ APP LOGIC ------------ */
+    let appInitialized = false;
+
+    function initApp() {
+        if (appInitialized) {
+            renderClassOptions();
+            renderResults();
+            return;
+        }
+        appInitialized = true;
+        renderClassOptions();
+        setupSlider();
+        renderResults();
+    }
+
+    function renderClassOptions() {
+        // group classes
+        const grouped = {};
+        CLASSES.forEach(c => {
+            if (!grouped[c.group]) grouped[c.group] = [];
+            grouped[c.group].push(c);
+        });
+
+        let html = "";
+        GROUP_ORDER.forEach(group => {
+            const items = grouped[group];
+            if (!items || !items.length) return;
+            html += `<div class="group-label">${group}</div>`;
+            html += `<div class="class-grid">`;
+            items.forEach(c => {
+                const active = selectedClass === c.id ? "active" : "";
+                html += `
+                    <button class="class-option ${active}" data-id="${c.id}" type="button">
+                        <span class="check">✓</span>
+                        <span class="co-name">${c.name}</span>
+                        <span class="co-path">${c.path}/</span>
+                    </button>
+                `;
+            });
+            html += `</div>`;
+        });
+
+        classGroups.innerHTML = html;
+
+        classGroups.querySelectorAll(".class-option").forEach(btn => {
+            btn.addEventListener("click", () => {
+                selectedClass = btn.dataset.id;
+                renderClassOptions();
+                renderResults();
+            });
+        });
+    }
+
+    function setupSlider() {
+        pageSlider.addEventListener("input", (e) => {
+            selectedPage = Number(e.target.value);
+            pageValue.textContent = selectedPage;
+            updateSliderFill();
+            renderResults();
+        });
+        updateSliderFill();
+    }
+
+    function updateSliderFill() {
+        const min = Number(pageSlider.min) || 1;
+        const max = Number(pageSlider.max) || 31;
+        const pct = ((selectedPage - min) / (max - min)) * 100;
+        pageSlider.style.setProperty("--fill", pct + "%");
+    }
+
+    function buildUrl(cls, page) {
+        return `${BASE}${cls.path}/${page}.pdf`;
+    }
+
+    function renderResults() {
+        if (!selectedClass) {
+            downloadList.innerHTML = `
+                <div class="empty-state">
+                    <div class="big">📚</div>
+                    Pick a class above to see its download link.
+                </div>
+            `;
+            resultsTitle.innerHTML = `Download link <span id="resultsMeta"></span>`;
+            return;
+        }
+
+        const cls = CLASSES.find(c => c.id === selectedClass);
+        if (!cls) return;
+
+        const url = buildUrl(cls, selectedPage);
+        resultsTitle.innerHTML = `Download link <span id="resultsMeta">· ${cls.name} · page ${selectedPage}</span>`;
+
+        downloadList.innerHTML = `
+            <div class="dl-row">
+                <div class="dl-icon">PDF</div>
+                <div class="dl-info">
+                    <div class="dl-name">${cls.name} — Page ${selectedPage}</div>
+                    <div class="dl-url">${url}</div>
+                </div>
+                <a class="dl-btn" href="${url}" target="_blank" rel="noopener noreferrer" download>⬇ Download</a>
+            </div>
+        `;
+    }
+
+    /* ------------ BOOT ------------ */
+    if (isUnlocked()) {
+        showApp();
+    } else {
+        showGate();
+    }
+})();
+</script>
+</body>
+</html>
